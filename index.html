@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carte des Dialectes Amazighs et Contributions Culturelles</title>
+    <!-- Leaflet CSS for map visualization -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        /* Map container styling */
+        #map {
+            height: 600px;
+            width: 100%;
+            border: 3px solid rgba(0, 0, 100, 0.7);
+            border-radius: 15px;
+            box-shadow: 0 20px 50px rgba(0, 0, 100, 0.7);
+            background: radial-gradient(circle, rgba(18, 18, 18, 0.8), rgba(0, 0, 0, 0.5));
+        }
+
+        /* Legends for the map */
+        .legend, .legend-left {
+            position: absolute;
+            background: rgba(0, 0, 100, 0.8);
+            color: #fff;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 100, 0.6);
+            font-size: 14px;
+            line-height: 1.5;
+            z-index: 999;
+        }
+
+        .legend {
+            bottom: 40px;
+            right: 20px;
+        }
+
+        .legend-left {
+            top: 120px;
+            left: 10px;
+        }
+
+        .legend i {
+            display: inline-block;
+            width: 20px;
+            height: 10px;
+            margin-right: 5px;
+        }
+
+        /* Colors for the legend (consistent with map) */
+        .blue { background: blue; }
+        .yellow { background: yellow; }
+        .green { background: green; }
+        .red { background: red; }
+        .purple { background: purple; }
+    </style>
+</head>
+<body>
+    <h1 style="text-align:center; color: navy;">Carte des Dialectes Amazighs et Contributions Culturelles</h1>
+    <p style="text-align:center;">Cette carte montre les régions où les dialectes amazighs sont parlés et leurs caractéristiques.</p>
+
+    <!-- Map container -->
+    <div id="map"></div>
+
+    <!-- Main legend for research themes -->
+    <div class="legend">
+        <h4>Légende</h4>
+        <i class="blue"></i> Tarifit (Nord du Maroc)<br>
+        <i class="green"></i> Tamazight (Centre du Maroc)<br>
+        <i class="yellow"></i> Tachelhit (Sud du Maroc)<br>
+        <i class="red"></i> Touareg (Sahara et Sud Sahara)<br>
+    </div>
+
+    <!-- Legend for specific circulations -->
+    <div class="legend-left">
+        <h4>Dialectes Régionaux</h4>
+        <i class="blue"></i> Tarifit : Région Rif au nord du Maroc<br>
+        <i class="green"></i> Tamazight : Région centrale<br>
+        <i class="yellow"></i> Tachelhit : Région sud du Maroc<br>
+        <i class="red"></i> Touareg : Sahara et Sud-Sahara
+    </div>
+
+    <!-- Leaflet JS for the map -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+        // Initialize the map
+        var map = L.map('map').setView([31.7917, -7.0926], 5); // North Africa
+
+        // Add OpenStreetMap tiles
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 18,
+        }).addTo(map);
+
+        // Define custom markers based on dialect type
+        function getColor(dialect) {
+            switch (dialect) {
+                case 'Tarifit': return 'blue'; 
+                case 'Tamazight': return 'green';
+                case 'Tachelhit': return 'yellow'; 
+                case 'Touareg': return 'red'; 
+                default: return 'black';
+            }
+        }
+
+        // Function to create markers with popups
+        function createCustomMarker(lat, lng, dialect, description) {
+            return L.circleMarker([lat, lng], {
+                color: getColor(dialect),
+                radius: 12,
+                fillOpacity: 0.8
+            }).addTo(map).bindPopup(`<b>${dialect}</b><br>${description}`);
+        }
+
+        // Add markers for key dialect regions with descriptions
+        createCustomMarker(35.1672, -3.9558, 'Tarifit', 'Tarifit, ou rifain, est parlé au nord du Maroc dans la région du Rif. Il se distingue par des influences phonologiques uniques et une structure grammaticale distincte.'); // Rif Region (Tarifit)
+        createCustomMarker(32.25, -5.9, 'Tamazight', 'Tamazight est parlé dans le centre du Maroc. Il s\'agit d\'un dialecte amazigh très utilisé dans la région centrale et dans les montagnes.'); // Central Morocco (Tamazight)
+        createCustomMarker(30.42, -8.68, 'Tachelhit', 'Tachelhit, parlé dans le sud du Maroc, est connu pour sa diversité phonologique et ses influences géographiques liées aux montagnes du sud.'); // Southern Morocco (Tachelhit)
+        createCustomMarker(24.27, 10.12, 'Touareg', 'Le dialecte touareg est parlé dans les régions sahariennes du sud. Sa phonologie comprend des distinctions spécifiques liées aux voyelles longues.'); // Tuareg Region
+
+    </script>
+</body>
+</html>
